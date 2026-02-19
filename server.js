@@ -5,10 +5,15 @@ const express = require('express');
 const { Resend } = require('resend');
 const cron = require('node-cron');
 const fs = require('fs');
+const path = require('path');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const app = express();
 app.use(express.json());
+
+// Serve the frontend
+app.use(express.static(path.join(__dirname)));
+app.get('/', (_req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 // Load events from file
 let events = [];
